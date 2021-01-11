@@ -42,6 +42,50 @@ func (e *Encoder) PutString(value string) (err error) {
 	return e.PutVariadicDataWith2BytesHeader([]byte(value))
 }
 
+func (e *Encoder) PutInt64(value int64) (err error) {
+	if e.isReleased == false {
+		err = ErrEncoderIsReleased
+		return
+	}
+
+	binary.PutVarint(e.tmpBuffer[0:8], value)
+	e.payload.Write(e.tmpBuffer[0:8])
+	return
+}
+
+func (e *Encoder) PutInt32(value int32) (err error) {
+	if e.isReleased == false {
+		err = ErrEncoderIsReleased
+		return
+	}
+
+	binary.PutVarint(e.tmpBuffer[0:4], int64(value))
+	e.payload.Write(e.tmpBuffer[0:4])
+	return
+}
+
+func (e *Encoder) PutInt16(value int16) (err error) {
+	if e.isReleased == false {
+		err = ErrEncoderIsReleased
+		return
+	}
+
+	binary.PutVarint(e.tmpBuffer[0:2], int64(value))
+	e.payload.Write(e.tmpBuffer[0:2])
+	return
+}
+
+func (e *Encoder) PutInt8(value int8) (err error) {
+	if e.isReleased == false {
+		err = ErrEncoderIsReleased
+		return
+	}
+
+	binary.PutVarint(e.tmpBuffer[0:1], int64(value))
+	e.payload.Write(e.tmpBuffer[0:1])
+	return
+}
+
 func (e *Encoder) PutUint64(value uint64) (err error) {
 	if e.isReleased == false {
 		err = ErrEncoderIsReleased

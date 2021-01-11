@@ -37,6 +37,62 @@ func (d *Decoder) GetString() (value string, err error) {
 	return
 }
 
+func (d *Decoder) GetInt64() (value int64, err error) {
+	tmp := tmp8BytesBuffersPool.Get().([]byte)
+	defer tmp8BytesBuffersPool.Put(tmp)
+
+	_, err = d.reader.Read(tmp[0:8])
+	if err != nil {
+		return
+	}
+
+	bytesReader := bytes.NewReader(tmp)
+	value, err = binary.ReadVarint(bytesReader)
+	return
+}
+
+func (d *Decoder) GetInt32() (value int32, err error) {
+	tmp := tmp8BytesBuffersPool.Get().([]byte)
+	defer tmp8BytesBuffersPool.Put(tmp)
+
+	_, err = d.reader.Read(tmp[0:4])
+	if err != nil {
+		return
+	}
+
+	bytesReader := bytes.NewReader(tmp)
+	i, err := binary.ReadVarint(bytesReader)
+	return int32(i), err
+}
+
+func (d *Decoder) GetInt16() (value int16, err error) {
+	tmp := tmp8BytesBuffersPool.Get().([]byte)
+	defer tmp8BytesBuffersPool.Put(tmp)
+
+	_, err = d.reader.Read(tmp[0:2])
+	if err != nil {
+		return
+	}
+
+	bytesReader := bytes.NewReader(tmp)
+	i, err := binary.ReadVarint(bytesReader)
+	return int16(i), err
+}
+
+func (d *Decoder) GetInt8() (value int8, err error) {
+	tmp := tmp8BytesBuffersPool.Get().([]byte)
+	defer tmp8BytesBuffersPool.Put(tmp)
+
+	_, err = d.reader.Read(tmp[0:1])
+	if err != nil {
+		return
+	}
+
+	bytesReader := bytes.NewReader(tmp)
+	i, err := binary.ReadVarint(bytesReader)
+	return int8(i), err
+}
+
 func (d *Decoder) GetUint64() (value uint64, err error) {
 	tmp := tmp8BytesBuffersPool.Get().([]byte)
 	defer tmp8BytesBuffersPool.Put(tmp)
