@@ -1,3 +1,3 @@
-module gitlab.com/jaxnet/common/marshaller
+module github.com/HaySayCheese/bmarshaller
 
-go 1.15
+go 1.16
